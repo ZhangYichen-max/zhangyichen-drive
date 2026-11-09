@@ -140,7 +140,7 @@
 (function(){
   var REPO = 'ZhangYichen-max/zhangyichen-drive';
   var BRANCH = 'main';
-  var HIDE = {'index.html':1,'CNAME':1,'.nojekyll':1,'about.html':1};
+  var HIDE = {'index.html':1,'CNAME':1,'.nojekyll':1,'about.html':1,'get-code.json':1};
   var ICONS = [
     [/\.apk$/,'🤖'],[/\.(zip|rar|7z|tar|gz)$/,'📦'],
     [/\.mp3$|\.flac$|\.wav$|\.ogg$/,'🎵'],[/\.mid(i)?$/,'🎹'],
@@ -187,6 +187,9 @@
   }
   function renderList(items){
     current = items;
+    loadCodes().then(function(){ renderListNow(items); });
+  }
+  function renderListNow(items){
     filesEl.innerHTML = '';
     if (!items.length){
       filesEl.innerHTML = '<div class="status"><span class="big">🌱</span>这个文件夹还是空的<br>' +
@@ -203,12 +206,13 @@
           '<span class="fname"><a href="#/' + encodeURIComponent(it.path) + '">' + esc(it.name) + '</a></span>' +
           '<span class="fsize"></span>';
       } else {
-        var url = '/' + encodeURI(it.path);
+        var locked = codeOf(it.path) !== undefined;
         row.innerHTML =
           '<span class="ficon">' + icon(it.name) + '</span>' +
-          '<span class="fname"><a href="' + url + '" target="_blank" rel="noopener">' + esc(it.name) + '</a></span>' +
+          '<span class="fname"><a data-dl="1" data-path="' + esc(it.path) + '" data-name="' + esc(it.name) + '" href="javascript:void 0">' +
+            esc(it.name) + (locked ? ' <span class="lock" title="需要提取码">🔒</span>' : '') + '</a></span>' +
           '<span class="fsize">' + fmtSize(it.size) + '</span>' +
-          '<a class="dl" href="' + url + '" download>下载</a>';
+          '<a class="dl" data-dl="1" data-path="' + esc(it.path) + '" data-name="' + esc(it.name) + '" href="javascript:void 0">下载</a>';
       }
       frag.appendChild(row);
     });
@@ -216,6 +220,43 @@
   }
   function fail(msg){
     filesEl.innerHTML = '<div class="status err"><span class="big"> :( </span>' + msg + '</div>';
+  }
+
+  /* ---------- 提取码机制（get-code.json：路径→提取码）---------- */
+  var codeCache = null;        // null=未加载 {}=无保护文件
+  var codeCacheAt = 0;
+  function loadCodes(){
+    if (codeCache && Date.now() - codeCacheAt < 60000) return Promise.resolve(codeCache);
+    return fetch('/get-code.json?t=' + Date.now())
+      .then(function(r){ return r.ok ? r.json() : {}; })
+      .catch(function(){ return {}; })
+      .then(function(j){ codeCache = j || {}; codeCacheAt = Date.now(); return codeCache; });
+  }
+  function codeOf(path){
+    if (!codeCache) return undefined;      // 未知
+    return codeCache[path];                // undefined = 无需提取码
+  }
+  function askCode(name, cb){
+    var v = window.prompt('「' + name + '」需要提取码\n请输入提取码：');
+    if (v === null) return;                // 取消
+    cb(v);
+  }
+  function tryDownload(it, code){
+    loadCodes().then(function(){
+      var need = codeOf(it.path);
+      if (need === undefined){ reallyDownload(it); return; }
+      if (code === need){ reallyDownload(it); return; }
+      alert('提取码不正确');
+      askCode(it.name, function(v){ tryDownload(it, v); });
+    });
+  }
+  function reallyDownload(it){
+    var a = document.createElement('a');
+    a.href = '/' + encodeURI(it.path);
+    a.download = it.name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 
   function load(){
@@ -249,6 +290,20 @@
       })
       .catch(function(e){ fail(e.message || '网络错误，请稍后再试'); });
   }
+
+  filesEl.addEventListener('click', function(ev){
+    var t = ev.target.closest('[data-dl]');
+    if (!t) return;
+    ev.preventDefault();
+    var path = t.getAttribute('data-path');
+    var it = current.filter(function(x){ return x.path === path; })[0];
+    if (!it) return;
+    loadCodes().then(function(){
+      var need = codeOf(it.path);
+      if (need === undefined){ reallyDownload(it); return; }
+      askCode(it.name, function(v){ tryDownload(it, v); });
+    });
+  });
 
   searchEl.addEventListener('input', function(){
     var q = searchEl.value.trim().toLowerCase();
