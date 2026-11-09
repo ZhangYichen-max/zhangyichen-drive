@@ -1,1 +1,265 @@
-not here yet-
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GUMI Drive · 张轶尘</title>
+<meta name="description" content="GUMI Drive —— 张轶尘的公开云盘。开源作品与资源分享，薄荷绿、零依赖。">
+<style>
+  :root{
+    --green:#10b981;
+    --green-dark:#0d9488;
+    --green-deep:#065f46;
+    --mint:#ecfdf5;
+    --mint-2:#d1fae5;
+    --ink:#1f2937;
+    --ink-soft:#4b5563;
+    --card:#ffffff;
+    --bg:#f6faf8;
+    --border:#e2e8f0;
+    --shadow:0 2px 12px rgba(16,185,129,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.85;
+  }
+  a{color:var(--green-dark);text-decoration:none}
+
+  header{background:linear-gradient(315deg,var(--mint) 0%,var(--mint-2) 45%,#a7f3d0 100%);border-bottom:1px solid var(--border)}
+  .nav{
+    max-width:920px;margin:0 auto;padding:14px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+  }
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--green-deep);font-size:1.05rem}
+  .nav-links{display:flex;gap:18px;font-size:.95rem}
+  .nav-links a{color:var(--ink-soft)}
+  .nav-links a:hover{color:var(--green-dark)}
+  .nav-links a.active{color:var(--green-dark);font-weight:600}
+
+  .hero{text-align:center;padding:46px 20px 34px}
+  .hero .icon-big{font-size:3.2rem;display:block;margin-bottom:10px}
+  .hero h1{font-size:2rem;color:var(--green-deep);letter-spacing:.5px}
+  .hero .sub{color:var(--ink-soft);font-size:.95rem;margin-top:6px}
+
+  .wrap{max-width:920px;margin:0 auto;padding:8px 20px 40px}
+
+  .toolbar{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    flex-wrap:wrap;margin-bottom:14px;
+  }
+  .crumbs{font-size:.95rem;color:var(--ink-soft);word-break:break-all}
+  .crumbs a{color:var(--green-dark);font-weight:600}
+  .crumbs .sep{color:var(--border);margin:0 6px}
+  .search{
+    border:1px solid var(--border);border-radius:999px;background:#fff;
+    padding:8px 16px;font-size:.9rem;width:220px;outline:none;color:var(--ink);
+    transition:border .2s,box-shadow .2s;
+  }
+  .search:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.15)}
+
+  .files{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .frow{
+    display:flex;align-items:center;gap:14px;padding:13px 18px;
+    border-bottom:1px solid var(--border);transition:background .15s;
+  }
+  .frow:last-child{border-bottom:none}
+  .frow:hover{background:var(--mint)}
+  .frow .ficon{font-size:1.35rem;width:34px;text-align:center;flex-shrink:0}
+  .frow .fname{flex:1;min-width:0;word-break:break-all;font-size:.97rem}
+  .frow .fname a{color:var(--ink);font-weight:500}
+  .frow .fname a:hover{color:var(--green-dark)}
+  .frow .fsize{color:var(--ink-soft);font-size:.85rem;flex-shrink:0;min-width:70px;text-align:right}
+  .frow .dl{
+    flex-shrink:0;font-size:.85rem;color:#fff;background:var(--green);
+    padding:5px 16px;border-radius:999px;transition:background .2s,transform .2s;
+  }
+  .frow .dl:hover{background:var(--green-dark);transform:translateY(-1px)}
+
+  .status{text-align:center;padding:44px 20px;color:var(--ink-soft)}
+  .status .big{font-size:2rem;display:block;margin-bottom:8px}
+  .err{color:#b91c1c}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:.85rem;
+    padding:26px 20px 34px;border-top:1px solid var(--border);
+  }
+  footer .heart{color:var(--green)}
+
+  @media (max-width:560px){
+    .hero h1{font-size:1.6rem}
+    .frow .fsize{display:none}
+    .search{width:100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="logo" href="https://zhangyichen.asia/" aria-label="GUMI Home">
+      <svg width="30" height="30" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="18" fill="#10b981"/>
+        <path d="M13 24c0-4 3-7 7-7s7 3 7 7" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <circle cx="15.5" cy="16" r="1.8" fill="#fff"/>
+        <circle cx="24.5" cy="16" r="1.8" fill="#fff"/>
+      </svg>
+      <span>GUMI Drive</span>
+    </a>
+    <div class="nav-links">
+      <a href="https://zhangyichen.asia/">Home</a>
+      <a href="https://zhangyichen.asia/blog-main.html">Blog</a>
+      <a class="active" href="/">Drive</a>
+      <a href="https://zhangyichen.asia/blog-about.html">关于</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="icon-big">🌿</span>
+  <h1>GUMI Drive</h1>
+  <p class="sub">张轶尘的公开云盘 · 开源作品与资源分享</p>
+</section>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="crumbs" id="crumbs"></div>
+    <input class="search" id="search" type="search" placeholder="🔍 在当前文件夹搜索…">
+  </div>
+  <div class="files" id="files">
+    <div class="status"><span class="big">⏳</span>加载中…</div>
+  </div>
+</div>
+
+<footer>GUMI Drive · Powered by GitHub Pages · Made with <span class="heart">♥</span> by 张轶尘</footer>
+
+<script>
+(function(){
+  var REPO = 'ZhangYichen-max/zhangyichen-drive';
+  var BRANCH = 'main';
+  var HIDE = {'index.html':1,'CNAME':1,'.nojekyll':1};
+  var ICONS = [
+    [/\.apk$/,'🤖'],[/\.(zip|rar|7z|tar|gz)$/,'📦'],
+    [/\.mp3$|\.flac$|\.wav$|\.ogg$/,'🎵'],[/\.mid(i)?$/,'🎹'],
+    [/\.jpe?g$|\.png$|\.gif$|\.webp$|\.bmp$|\.svg$/,'🖼️'],
+    [/\.pdf$/,'📕'],[/\.txt$|\.md$/,'📝'],[/\.exe$|\.msi$/,'🪟'],
+    [/\.json$|\.js$|\.css$|\.html?$/,'⚙️'],[/\.mp4$|\.mkv$|\.mov$/,'🎬']
+  ];
+  var filesEl = document.getElementById('files');
+  var crumbsEl = document.getElementById('crumbs');
+  var searchEl = document.getElementById('search');
+  var current = [];   // 当前目录条目
+
+  function icon(name){
+    for (var i=0;i<ICONS.length;i++)
+      if (ICONS[i][0].test(name)) return ICONS[i][1];
+    return '📄';
+  }
+  function fmtSize(n){
+    if (n < 1024) return n + ' B';
+    if (n < 1048576) return (n/1024).toFixed(1) + ' KB';
+    if (n < 1073741824) return (n/1048576).toFixed(1) + ' MB';
+    return (n/1073741824).toFixed(2) + ' GB';
+  }
+  function pathFromHash(){
+    var h = location.hash.replace(/^#/, '');
+    try { h = decodeURIComponent(h); } catch(e){}
+    return h.replace(/^\/+|\/+$/g,'');
+  }
+  function esc(s){
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function renderCrumbs(path){
+    var parts = path ? path.split('/') : [];
+    var html = '<a href="#/">GUMI Drive</a>';
+    var acc = '';
+    for (var i=0;i<parts.length;i++){
+      acc += (acc ? '/' : '') + parts[i];
+      html += '<span class="sep">/</span>' +
+        (i === parts.length-1
+          ? '<span>' + esc(parts[i]) + '</span>'
+          : '<a href="#/' + encodeURIComponent(acc) + '">' + esc(parts[i]) + '</a>');
+    }
+    crumbsEl.innerHTML = html;
+  }
+  function renderList(items){
+    current = items;
+    filesEl.innerHTML = '';
+    if (!items.length){
+      filesEl.innerHTML = '<div class="status"><span class="big">🌱</span>这个文件夹还是空的<br>' +
+        '<span style="font-size:.85rem">把文件上传到仓库的这个路径，页面会自动显示</span></div>';
+      return;
+    }
+    var frag = document.createDocumentFragment();
+    items.forEach(function(it){
+      var row = document.createElement('div');
+      row.className = 'frow';
+      if (it.dir){
+        row.innerHTML =
+          '<span class="ficon">📁</span>' +
+          '<span class="fname"><a href="#/' + encodeURIComponent(it.path) + '">' + esc(it.name) + '</a></span>' +
+          '<span class="fsize"></span>';
+      } else {
+        var url = '/' + encodeURI(it.path);
+        row.innerHTML =
+          '<span class="ficon">' + icon(it.name) + '</span>' +
+          '<span class="fname"><a href="' + url + '" target="_blank" rel="noopener">' + esc(it.name) + '</a></span>' +
+          '<span class="fsize">' + fmtSize(it.size) + '</span>' +
+          '<a class="dl" href="' + url + '" download>下载</a>';
+      }
+      frag.appendChild(row);
+    });
+    filesEl.appendChild(frag);
+  }
+  function fail(msg){
+    filesEl.innerHTML = '<div class="status err"><span class="big"> :( </span>' + msg + '</div>';
+  }
+
+  function load(){
+    var path = pathFromHash();
+    renderCrumbs(path);
+    searchEl.value = '';
+    var api = 'https://api.github.com/repos/' + REPO + '/contents/' +
+              encodeURIComponent(path).replace(/%2F/g,'/') + '?ref=' + BRANCH + '&t=' + Date.now();
+    fetch(api, {headers:{'Accept':'application/vnd.github+json'}})
+      .then(function(r){
+        if (r.status === 403)
+          throw new Error('GitHub API 限流了，喝口水再刷新试试（每小时 60 次）');
+        if (r.status === 404)
+          throw new Error('这个路径不存在');
+        if (!r.ok)
+          throw new Error('GitHub API 异常（HTTP ' + r.status + '）');
+        return r.json();
+      })
+      .then(function(arr){
+        if (!Array.isArray(arr)) throw new Error('这里不是文件夹');
+        var items = arr
+          .filter(function(f){ return !HIDE[f.name]; })
+          .map(function(f){
+            return {name:f.name, path:f.path, dir:f.type==='dir', size:f.size||0};
+          })
+          .sort(function(a,b){
+            return a.dir !== b.dir ? (a.dir ? -1 : 1)
+                 : a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1;
+          });
+        renderList(items);
+      })
+      .catch(function(e){ fail(e.message || '网络错误，请稍后再试'); });
+  }
+
+  searchEl.addEventListener('input', function(){
+    var q = searchEl.value.trim().toLowerCase();
+    renderList(current.filter(function(it){
+      return !q || it.name.toLowerCase().indexOf(q) >= 0;
+    }));
+  });
+
+  window.addEventListener('hashchange', load);
+  load();
+})();
+</script>
+</body>
+</html>
