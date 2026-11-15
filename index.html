@@ -193,7 +193,7 @@
     filesEl.innerHTML = '';
     if (!items.length){
       filesEl.innerHTML = '<div class="status"><span class="big">🌱</span>这个文件夹还是空的<br>' +
-        '<span style="font-size:.85rem">把文件上传到仓库的这个路径，页面会自动显示</span></div>';
+        '<span style="font-size:.85rem">你来的太早了</span></div>';
       return;
     }
     var frag = document.createDocumentFragment();
@@ -312,7 +312,7 @@
     var sh = ev.target.closest('[data-share]');
     if (sh){
       var link = location.origin + '/share.html#/' + sh.getAttribute('data-path');
-      var done = function(){ alert('分享链接已复制：\n' + link); };
+      var done = function(){ alert('分享链接已复制'); };
       if (navigator.clipboard && navigator.clipboard.writeText)
         navigator.clipboard.writeText(link).then(done, function(){ window.prompt('复制分享链接：', link); });
       else window.prompt('复制分享链接：', link);
